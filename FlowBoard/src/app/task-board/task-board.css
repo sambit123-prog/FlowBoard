@@ -1,0 +1,60 @@
+.task-board-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.task-form-card {
+  padding-bottom: 8px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.task-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.task-column {
+  min-height: 280px;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.task-item.completed {
+  opacity: 0.7;
+}
+
+.task-title {
+  font-weight: 600;
+}
+
+.task-notes {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.task-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+@media (max-width: 900px) {
+  .task-columns {
+    grid-template-columns: 1fr;
+  }
+}

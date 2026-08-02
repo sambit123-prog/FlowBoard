@@ -1,0 +1,45 @@
+.calendar-page {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 20px;
+}
+
+.calendar-form-card,
+.events-card {
+  min-height: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.event-title {
+  font-weight: 600;
+}
+
+.event-meta {
+  color: #3f51b5;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.event-notes {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .calendar-page {
+    grid-template-columns: 1fr;
+  }
+}

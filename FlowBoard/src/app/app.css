@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f5f7fb;
+  color: #1f2937;
+}
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.active-link {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.app-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+@media (max-width: 700px) {
+  .app-shell {
+    padding: 16px;
+  }
+}

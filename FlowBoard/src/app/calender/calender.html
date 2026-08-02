@@ -1,0 +1,44 @@
+<section class="calendar-page">
+  <mat-card class="calendar-form-card">
+    <mat-card-title>Schedule an event</mat-card-title>
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Event title</mat-label>
+        <input matInput [(ngModel)]="title" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Notes</mat-label>
+        <textarea matInput rows="3" [(ngModel)]="notes"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-flat-button color="primary" (click)="addEvent()">Save event</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="events-card">
+    <mat-card-title>Upcoming events</mat-card-title>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let event of events">
+          <div class="event-item">
+            <div>
+              <div class="event-title">{{ event.title }}</div>
+              <div class="event-meta">{{ event.date }}</div>
+              <div class="event-notes" *ngIf="event.notes">{{ event.notes }}</div>
+            </div>
+            <button mat-icon-button color="warn" (click)="removeEvent(event)"><mat-icon>delete</mat-icon></button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</section>

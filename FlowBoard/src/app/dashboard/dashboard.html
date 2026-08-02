@@ -1,0 +1,26 @@
+<section class="dashboard-page">
+  <mat-card class="hero-card">
+    <mat-card-content>
+      <div class="hero-copy">
+        <p class="eyebrow">Operations overview</p>
+        <h2>Stay aligned with a live work dashboard.</h2>
+        <p>Track tasks, keep deadlines visible, and discover trends through one simple view.</p>
+      </div>
+      <a mat-flat-button color="primary" routerLink="/task-board">Open task board</a>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="summary-grid">
+    <mat-card *ngFor="let item of summary" class="summary-card" [ngClass]="item.color">
+      <mat-card-content>
+        <div class="summary-top">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span class="summary-value">{{ item.value }}</span>
+        </div>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.hint }}</p>
+        <a mat-button [routerLink]="item.link">Open view</a>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

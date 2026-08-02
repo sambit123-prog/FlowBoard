@@ -1,0 +1,41 @@
+.analytics-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kpi-card {
+  min-height: 140px;
+}
+
+.kpi-label {
+  color: #6b7280;
+  margin: 0 0 6px;
+}
+
+.kpi-hint {
+  color: #6b7280;
+  margin: 6px 0 0;
+}
+
+.chart-card {
+  padding-bottom: 8px;
+}
+
+canvas {
+  display: block;
+  width: 100% !important;
+  min-height: 320px;
+}
+
+@media (max-width: 900px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

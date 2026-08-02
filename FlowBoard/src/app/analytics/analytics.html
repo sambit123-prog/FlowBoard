@@ -1,0 +1,18 @@
+<section class="analytics-page">
+  <div class="kpi-grid">
+    <mat-card *ngFor="let kpi of kpis" class="kpi-card">
+      <mat-card-content>
+        <p class="kpi-label">{{ kpi.label }}</p>
+        <h2>{{ kpi.value }}</h2>
+        <p class="kpi-hint">{{ kpi.hint }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="chart-card">
+    <mat-card-title>Task completion status</mat-card-title>
+    <mat-card-content>
+      <canvas #chartCanvas></canvas>
+    </mat-card-content>
+  </mat-card>
+</section>
