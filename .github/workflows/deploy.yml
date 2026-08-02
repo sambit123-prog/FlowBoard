@@ -27,16 +27,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Install dependencies
         run: cd FlowBoard && npm install
 
       - name: Build Angular App
         run: cd FlowBoard && npx ng build --configuration production --base-href /FlowBoard/
-
-      - name: Check output folder structure
-        run: ls -la FlowBoard/dist/flowboard
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
