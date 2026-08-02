@@ -35,10 +35,13 @@ jobs:
       - name: Build Angular App
         run: cd FlowBoard && npx ng build --configuration production --base-href /FlowBoard/
 
+      - name: Check output folder structure
+        run: ls -la FlowBoard/dist/flowboard
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'FlowBoard/dist/flowboard'
+          path: 'FlowBoard/dist/flowboard/browser'
 
       - name: Deploy to GitHub Pages
         id: deployment
