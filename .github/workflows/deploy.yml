@@ -30,7 +30,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: cd FlowBoard && npm ci
+        run: cd FlowBoard && npm install
 
       - name: Build Angular App
         run: cd FlowBoard && npx ng build --configuration production --base-href /FlowBoard/
@@ -38,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'FlowBoard/dist/flowboard/browser'
+          path: 'FlowBoard/dist/flowboard'
 
       - name: Deploy to GitHub Pages
         id: deployment
