@@ -26,7 +26,7 @@ jobs:
         run: cd FlowBoard && npm install
 
       - name: Install Vitest browser + coverage packages
-        run: cd FlowBoard && npm install --save-dev @vitest/coverage-v8 @vitest/browser-playwright
+        run: cd FlowBoard && npm install --save-dev @vitest/coverage-istanbul @vitest/browser-playwright
 
       - name: Run tests with coverage
         run: cd FlowBoard && npx ng test --no-watch --no-progress --browsers=playwright --coverage
