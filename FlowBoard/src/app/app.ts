@@ -12,4 +12,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 export class App {
   protected readonly title = signal('FlowBoard');
+  protected highContrast = false;
+
+  protected toggleHighContrast(): void {
+    this.highContrast = !this.highContrast;
+  }
 }

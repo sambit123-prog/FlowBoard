@@ -5,18 +5,30 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
-html {
-  height: 100%;
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$cyan-palette,
-        tertiary: mat.$orange-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+$flowboard-light: mat.define-light-theme((
+  color: (
+    primary: mat.$cyan-palette,
+    secondary: mat.$teal-palette,
+    error: mat.$red-palette,
+  ),
+  typography: Roboto,
+  density: 0,
+));
+
+$flowboard-high-contrast: mat.define-dark-theme((
+  color: (
+    primary: mat.$yellow-palette,
+    secondary: mat.$amber-palette,
+    error: mat.$deep-orange-palette,
+  ),
+  typography: Roboto,
+  density: 0,
+));
+
+@include mat.all-component-themes($flowboard-light);
+
+.high-contrast {
+  @include mat.all-component-themes($flowboard-high-contrast);
 }
 
 body {

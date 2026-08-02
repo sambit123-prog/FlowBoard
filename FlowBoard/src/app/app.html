@@ -1,12 +1,15 @@
-<mat-toolbar color="primary" class="app-toolbar">
+<mat-toolbar color="primary" class="app-toolbar" role="navigation" aria-label="Main navigation">
   <span>{{ title() }}</span>
   <span class="toolbar-spacer"></span>
-  <a mat-button routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
-  <a mat-button routerLink="/task-board" routerLinkActive="active-link">Task Board</a>
-  <a mat-button routerLink="/calendar" routerLinkActive="active-link">Calendar</a>
-  <a mat-button routerLink="/analytics" routerLinkActive="active-link">Analytics</a>
+  <a mat-button routerLink="/dashboard" routerLinkActive="active-link" aria-label="Open Dashboard">Dashboard</a>
+  <a mat-button routerLink="/task-board" routerLinkActive="active-link" aria-label="Open Task Board">Task Board</a>
+  <a mat-button routerLink="/calendar" routerLinkActive="active-link" aria-label="Open Calendar">Calendar</a>
+  <a mat-button routerLink="/analytics" routerLinkActive="active-link" aria-label="Open Analytics">Analytics</a>
+  <button mat-icon-button aria-label="Toggle high contrast theme" (click)="toggleHighContrast()">
+    <mat-icon>contrast</mat-icon>
+  </button>
 </mat-toolbar>
 
-<main class="app-shell">
+<main class="app-shell" [class.high-contrast]="highContrast">
   <router-outlet />
 </main>

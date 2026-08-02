@@ -1,26 +1,72 @@
 <section class="dashboard-page">
-  <mat-card class="hero-card">
+  <mat-card class="hero-card" role="region" aria-label="Overview section">
     <mat-card-content>
       <div class="hero-copy">
         <p class="eyebrow">Operations overview</p>
         <h2>Stay aligned with a live work dashboard.</h2>
         <p>Track tasks, keep deadlines visible, and discover trends through one simple view.</p>
       </div>
-      <a mat-flat-button color="primary" routerLink="/task-board">Open task board</a>
+      <a mat-flat-button color="primary" routerLink="/task-board" aria-label="Open task board">Open task board</a>
     </mat-card-content>
   </mat-card>
 
   <div class="summary-grid">
-    <mat-card *ngFor="let item of summary" class="summary-card" [ngClass]="item.color">
+    <mat-card *ngFor="let item of summary" class="summary-card" [ngClass]="item.color" role="group" aria-label="Summary card">
       <mat-card-content>
         <div class="summary-top">
-          <mat-icon>{{ item.icon }}</mat-icon>
+          <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
           <span class="summary-value">{{ item.value }}</span>
         </div>
         <h3>{{ item.title }}</h3>
         <p>{{ item.hint }}</p>
-        <a mat-button [routerLink]="item.link">Open view</a>
+        <a mat-button [routerLink]="item.link" aria-label="Open {{ item.title }}">Open view</a>
       </mat-card-content>
     </mat-card>
   </div>
+
+  <div class="insights-panel" role="region" aria-label="AI insights and productivity badges">
+    <mat-card class="insight-card" aria-label="Priority suggestions">
+      <mat-card-title>Suggested priorities</mat-card-title>
+      <mat-card-content>
+        <ng-container *ngIf="suggestedTasks.length; else noSuggestions">
+          <ul>
+            <li *ngFor="let task of suggestedTasks">{{ task }}</li>
+          </ul>
+        </ng-container>
+        <ng-template #noSuggestions>
+          <p>No priority suggestions available.</p>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="insight-card" aria-label="Overdue warnings">
+      <mat-card-title>AI warnings</mat-card-title>
+      <mat-card-content>
+        <ng-container *ngIf="warnings.length; else noWarnings">
+          <ul>
+            <li *ngFor="let warning of warnings">{{ warning }} is overdue</li>
+          </ul>
+        </ng-container>
+        <ng-template #noWarnings>
+          <p>All tasks are on track.</p>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="insight-card" aria-label="Badge status">
+      <mat-card-title>Badge</mat-card-title>
+      <mat-card-content>
+        <p>{{ badgeLabel }}</p>
+        <p *ngIf="user">Streak: {{ user.streak }} days</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="invite-card" aria-label="Team invites">
+    <mat-card-title>Pending invites</mat-card-title>
+    <mat-card-content>
+      <p>{{ invites }} pending invite(s)</p>
+      <p>Invite collaborators to share boards and stay synchronized.</p>
+    </mat-card-content>
+  </mat-card>
 </section>

@@ -19,10 +19,17 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "outputPath": "dist/flowboard",
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "manifest.webmanifest",
+                "input": "src",
+                "output": "/"
               }
             ],
             "styles": ["src/material-theme.scss", "src/styles.css"]

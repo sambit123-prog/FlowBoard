@@ -4,6 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { InsightsService } from '../services/insights.service';
+import { PersistenceService, UserProfile } from '../services/persistence.service';
+import { CollaborationService } from '../services/collaboration.service';
 
 interface DashboardSummary {
   title: string;
@@ -22,12 +25,33 @@ interface DashboardSummary {
 })
 export class Dashboard implements OnInit {
   summary: DashboardSummary[] = [];
+  warnings: string[] = [];
+  suggestedTasks: string[] = [];
+  badgeLabel = 'New user';
+  invites: number = 0;
+  user: UserProfile | null = null;
+
+  constructor(
+    private persistence: PersistenceService,
+    private insights: InsightsService,
+    private collaboration: CollaborationService
+  ) {}
 
   ngOnInit(): void {
-    const tasks = JSON.parse(localStorage.getItem('flow-board-tasks') ?? '[]');
-    const events = JSON.parse(localStorage.getItem('flow-board-events') ?? '[]');
-    const completed = tasks.filter((task: { completed: boolean }) => task.completed).length;
+    const tasks = this.persistence.loadTasks();
+    const events = this.persistence.loadEvents();
+    const completed = tasks.filter(task => task.completed).length;
     const pending = tasks.length - completed;
+
+    this.user = this.persistence.loadUser();
+    this.user.streak = this.insights.computeStreak(this.user, tasks);
+    this.persistence.saveUser(this.user);
+
+    this.warnings = this.insights.predictOverdue(tasks);
+    this.suggestedTasks = this.insights.getPrioritySuggestions(tasks).map(task => task.title);
+    this.invites = this.collaboration.getPendingInvites().length;
+
+    this.badgeLabel = this.user.streak > 7 ? 'Productivity Master' : this.user.streak > 3 ? 'Task Streaker' : 'Getting Started';
 
     this.summary = [
       { title: 'Open tasks', value: `${pending}`, hint: 'Pending action items', icon: 'task_alt', link: '/task-board', color: 'accent' },
