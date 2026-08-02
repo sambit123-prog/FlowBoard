@@ -23,7 +23,7 @@ export class InsightsService {
   predictOverdue(tasks: TaskItem[]): string[] {
     return tasks
       .filter(task => !task.completed && task.dueDate)
-      .filter(task => new Date(task.dueDate) < new Date())
+      .filter(task => task.dueDate ? new Date(task.dueDate) < new Date() : false)
       .map(task => task.title);
   }
 
