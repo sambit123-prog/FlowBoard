@@ -6,8 +6,18 @@ on:
       - main
 
 jobs:
+  codeql:
+    uses: ./.github/workflows/codeql.yml
+
+  deploy:
+    uses: ./.github/workflows/deploy.yml
+
+  sonar:
+    uses: ./.github/workflows/sonar.yml
+
   verify:
-    runs-on: ubuntu-22.04   # Stable runner
+    runs-on: ubuntu-22.04
+    needs: [codeql, deploy, sonar]   # waits for these jobs to finish
     steps:
       - name: Set up Node.js 22
         uses: actions/setup-node@v4
