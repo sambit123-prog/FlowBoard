@@ -6,11 +6,26 @@ on:
       - main
 
 jobs:
+  codeql:
+    uses: ./.github/workflows/codeql.yml
+
+  deploy:
+    uses: ./.github/workflows/deploy.yml
+
+  sonar:
+    uses: ./.github/workflows/sonar.yml
+
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    needs: [codeql, deploy, sonar]   # waits for these jobs to finish
     steps:
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Check previous workflow results
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const workflows = ['codeql.yml', 'deploy.yml', 'sonar.yml'];
@@ -23,6 +38,8 @@ jobs:
               });
               return runs.data.workflow_runs[0]?.conclusion === 'success';
             }));
-            if (!results.every(r => r)) {
-              core.setFailed('Not all required workflows passed.');
+
+            const failed = workflows.filter((wf, i) => !results[i]);
+            if (failed.length > 0) {
+              core.setFailed(`Failed workflows: ${failed.join(', ')}`);
             }
