@@ -7,7 +7,7 @@ on:
 
 jobs:
   verify:
-    runs-on: ubuntu-22.04   # Pin runner to avoid sudden changes
+    runs-on: ubuntu-22.04   # Stable runner
     steps:
       - name: Set up Node.js 22
         uses: actions/setup-node@v4
@@ -15,7 +15,7 @@ jobs:
           node-version: 22
 
       - name: Check previous workflow results
-        uses: actions/github-script@v8   # Updated to support Node 22
+        uses: actions/github-script@v8
         with:
           script: |
             const workflows = ['codeql.yml', 'deploy.yml', 'sonar.yml'];
@@ -28,6 +28,8 @@ jobs:
               });
               return runs.data.workflow_runs[0]?.conclusion === 'success';
             }));
-            if (!results.every(r => r)) {
-              core.setFailed('Not all required workflows passed.');
+
+            const failed = workflows.filter((wf, i) => !results[i]);
+            if (failed.length > 0) {
+              core.setFailed(`Failed workflows: ${failed.join(', ')}`);
             }
