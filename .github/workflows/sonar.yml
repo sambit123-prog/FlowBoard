@@ -26,7 +26,7 @@ jobs:
         run: cd FlowBoard && npm install
 
       - name: Run tests with coverage
-        run: cd FlowBoard && npx ng test --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
+        run: cd FlowBoard && npx ng test --no-watch --no-progress --browsers=ChromeHeadless --coverage
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v3
