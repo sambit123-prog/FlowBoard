@@ -1,0 +1,50 @@
+name: CI with SonarCloud
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Disabling shallow clone is recommended by SonarCloud for proper blame info
+          fetch-depth: 0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: cd FlowBoard && npm install
+
+      - name: Run tests with coverage
+        run: cd FlowBoard && npx ng test --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v3
+        with:
+          args: >
+            -Dsonar.projectKey=sambit123-prog_FlowBoard
+            -Dsonar.organization=sambit123-prog
+            -Dsonar.sources=FlowBoard/src
+            -Dsonar.tests=FlowBoard/src
+            -Dsonar.test.inclusions=**/*.spec.ts
+            -Dsonar.javascript.lcov.reportPaths=FlowBoard/coverage/flowboard/lcov.info
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+
+      - name: SonarCloud Quality Gate
+        uses: SonarSource/sonarcloud-quality-gate-action@v1
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
