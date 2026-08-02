@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { PersistenceService } from '../services/persistence.service';
 
 interface CalendarEvent {
   id: number;
@@ -30,18 +31,18 @@ export class Calender implements OnInit {
   notes = '';
   selectedDate: Date | null = new Date();
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private persistence: PersistenceService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadEvents();
   }
 
   loadEvents(): void {
-    this.events = JSON.parse(localStorage.getItem('flow-board-events') ?? '[]');
+    this.events = this.persistence.loadEvents();
   }
 
   saveEvents(): void {
-    localStorage.setItem('flow-board-events', JSON.stringify(this.events));
+    this.persistence.saveEvents(this.events);
   }
 
   addEvent(): void {
@@ -60,12 +61,18 @@ export class Calender implements OnInit {
     this.notes = '';
     this.selectedDate = new Date();
     this.saveEvents();
-    this.snackBar.open('Event added.', 'Close', { duration: 1800 });
+    this.snackBar.open('✔ Event added', 'Close', {
+      duration: 1800,
+      panelClass: ['success-snackbar'],
+    });
   }
 
   removeEvent(eventItem: CalendarEvent): void {
     this.events = this.events.filter(item => item.id !== eventItem.id);
     this.saveEvents();
-    this.snackBar.open('Event removed.', 'Close', { duration: 1800 });
+    this.snackBar.open('✔ Event removed', 'Close', {
+      duration: 1800,
+      panelClass: ['success-snackbar'],
+    });
   }
 }

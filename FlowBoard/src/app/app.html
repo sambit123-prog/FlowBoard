@@ -1,13 +1,24 @@
 <mat-toolbar color="primary" class="app-toolbar" role="navigation" aria-label="Main navigation">
-  <span>{{ title() }}</span>
-  <span class="toolbar-spacer"></span>
-  <a mat-button routerLink="/dashboard" routerLinkActive="active-link" aria-label="Open Dashboard">Dashboard</a>
-  <a mat-button routerLink="/task-board" routerLinkActive="active-link" aria-label="Open Task Board">Task Board</a>
-  <a mat-button routerLink="/calendar" routerLinkActive="active-link" aria-label="Open Calendar">Calendar</a>
-  <a mat-button routerLink="/analytics" routerLinkActive="active-link" aria-label="Open Analytics">Analytics</a>
-  <button mat-icon-button aria-label="Toggle high contrast theme" (click)="toggleHighContrast()">
-    <mat-icon>contrast</mat-icon>
-  </button>
+  <div class="toolbar-brand">
+    <span>{{ title() }}</span>
+    <small>Personal productivity hub</small>
+  </div>
+
+  <div class="toolbar-links">
+    <a mat-button routerLink="/dashboard" routerLinkActive="active-link" aria-label="Open Dashboard">Dashboard</a>
+    <a mat-button routerLink="/task-board" routerLinkActive="active-link" aria-label="Open Task Board">Task Board</a>
+    <a mat-button routerLink="/calendar" routerLinkActive="active-link" aria-label="Open Calendar">Calendar</a>
+    <a mat-button routerLink="/analytics" routerLinkActive="active-link" aria-label="Open Analytics">Analytics</a>
+  </div>
+
+  <div class="toolbar-actions">
+    <button mat-icon-button aria-label="Toggle high contrast theme" (click)="toggleHighContrast()">
+      <mat-icon>contrast</mat-icon>
+    </button>
+    <a mat-icon-button href="https://copilot.microsoft.com/" target="_blank" rel="noreferrer noopener" aria-label="Open Microsoft Copilot">
+      <mat-icon>smart_toy</mat-icon>
+    </a>
+  </div>
 </mat-toolbar>
 
 <main class="app-shell" [class.high-contrast]="highContrast">

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { JsonServerService } from './json-server.service';
 
 const TASK_KEY = 'flow-board-tasks';
 const EVENT_KEY = 'flow-board-events';
 const BOARD_KEY = 'flow-board-boards';
 const USER_KEY = 'flow-board-user';
+const SYNC_KEY = 'flow-board-sync-queue';
 
 export interface TaskItem {
   id: number;
@@ -45,52 +47,81 @@ export interface SyncChange {
 
 @Injectable({ providedIn: 'root' })
 export class PersistenceService {
-  constructor() {}
+  constructor(private jsonServer: JsonServerService) {}
+
+  private loadLegacyData<T>(legacyKey: string): T[] {
+    const raw = localStorage.getItem(legacyKey);
+    if (!raw) {
+      return [];
+    }
+    try {
+      return JSON.parse(raw) as T[];
+    } catch {
+      return [];
+    }
+  }
 
   saveTasks(tasks: TaskItem[]): void {
-    localStorage.setItem(TASK_KEY, JSON.stringify(tasks));
+    this.jsonServer.replace<TaskItem>(TASK_KEY, tasks);
   }
 
   loadTasks(): TaskItem[] {
-    return JSON.parse(localStorage.getItem(TASK_KEY) ?? '[]');
+    const tasks = this.jsonServer.read<TaskItem>(TASK_KEY);
+    if (!tasks.length) {
+      const legacy = this.loadLegacyData<TaskItem>(TASK_KEY);
+      if (legacy.length) {
+        this.saveTasks(legacy);
+        return legacy;
+      }
+    }
+    return tasks;
   }
 
   saveEvents(events: CalendarEvent[]): void {
-    localStorage.setItem(EVENT_KEY, JSON.stringify(events));
+    this.jsonServer.replace<CalendarEvent>(EVENT_KEY, events);
   }
 
   loadEvents(): CalendarEvent[] {
-    return JSON.parse(localStorage.getItem(EVENT_KEY) ?? '[]');
+    const events = this.jsonServer.read<CalendarEvent>(EVENT_KEY);
+    if (!events.length) {
+      const legacy = this.loadLegacyData<CalendarEvent>(EVENT_KEY);
+      if (legacy.length) {
+        this.saveEvents(legacy);
+        return legacy;
+      }
+    }
+    return events;
   }
 
   saveBoards(boards: any[]): void {
-    localStorage.setItem(BOARD_KEY, JSON.stringify(boards));
+    this.jsonServer.replace<any>(BOARD_KEY, boards);
   }
 
   loadBoards(): any[] {
-    return JSON.parse(localStorage.getItem(BOARD_KEY) ?? '[]');
+    return this.jsonServer.read<any>(BOARD_KEY);
   }
 
   saveUser(user: UserProfile): void {
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    this.jsonServer.replace<UserProfile>(USER_KEY, [user]);
   }
 
   loadUser(): UserProfile {
-    return JSON.parse(localStorage.getItem(USER_KEY) ?? JSON.stringify({ id: 'user-1', name: 'FlowBoard User', streak: 0 }));
+    const users = this.jsonServer.read<UserProfile>(USER_KEY);
+    return users.length ? users[0] : { id: 'user-1', name: 'FlowBoard User', streak: 0 };
   }
 
   queueSyncChange(change: SyncChange): void {
-    const pending = JSON.parse(localStorage.getItem('flow-board-sync-queue') ?? '[]');
+    const pending = this.jsonServer.read<SyncChange>(SYNC_KEY);
     pending.push(change);
-    localStorage.setItem('flow-board-sync-queue', JSON.stringify(pending));
+    this.jsonServer.replace<SyncChange>(SYNC_KEY, pending);
   }
 
   loadSyncQueue(): SyncChange[] {
-    return JSON.parse(localStorage.getItem('flow-board-sync-queue') ?? '[]');
+    return this.jsonServer.read<SyncChange>(SYNC_KEY);
   }
 
   clearSyncQueue(): void {
-    localStorage.removeItem('flow-board-sync-queue');
+    this.jsonServer.clear(SYNC_KEY);
   }
 
   prepareEncryptedSync(): void {
@@ -99,10 +130,10 @@ export class PersistenceService {
   }
 
   purgeLocalData(): void {
-    localStorage.removeItem(TASK_KEY);
-    localStorage.removeItem(EVENT_KEY);
-    localStorage.removeItem(BOARD_KEY);
-    localStorage.removeItem(USER_KEY);
-    localStorage.removeItem('flow-board-sync-queue');
+    this.jsonServer.clear(TASK_KEY);
+    this.jsonServer.clear(EVENT_KEY);
+    this.jsonServer.clear(BOARD_KEY);
+    this.jsonServer.clear(USER_KEY);
+    this.jsonServer.clear(SYNC_KEY);
   }
 }

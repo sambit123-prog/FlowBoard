@@ -1,16 +1,18 @@
 <section class="task-board-page">
   <mat-card class="task-form-card">
-    <mat-card-title>Add a task</mat-card-title>
+    <mat-card-title>New task</mat-card-title>
     <mat-card-content>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Task title</mat-label>
-        <input matInput [(ngModel)]="newTitle" />
-      </mat-form-field>
+      <div class="task-form-grid">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Task title</mat-label>
+          <input matInput [(ngModel)]="newTitle" />
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Notes</mat-label>
-        <textarea matInput rows="3" [(ngModel)]="newNotes"></textarea>
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notes</mat-label>
+          <textarea matInput rows="3" [(ngModel)]="newNotes"></textarea>
+        </mat-form-field>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <button mat-flat-button color="primary" (click)="addTask()">Add task</button>
@@ -18,12 +20,12 @@
   </mat-card>
 
   <div class="task-columns" cdkDropListGroup>
-    <mat-card class="task-column">
+    <mat-card class="task-column pending-column">
       <mat-card-title>Pending</mat-card-title>
       <mat-card-content>
-        <div cdkDropList [cdkDropListData]="tasks.filter(task => !task.completed)" (cdkDropListDropped)="drop($event)">
+        <div cdkDropList [cdkDropListData]="pendingTasks" (cdkDropListDropped)="drop($event)">
           <mat-list>
-            <mat-list-item *ngFor="let task of tasks.filter(task => !task.completed)" cdkDrag>
+            <mat-list-item *ngFor="let task of pendingTasks" cdkDrag>
               <div class="task-item">
                 <div>
                   <div class="task-title">{{ task.title }}</div>
@@ -40,12 +42,12 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="task-column">
+    <mat-card class="task-column completed-column">
       <mat-card-title>Completed</mat-card-title>
       <mat-card-content>
-        <div cdkDropList [cdkDropListData]="tasks.filter(task => task.completed)" (cdkDropListDropped)="drop($event)">
+        <div cdkDropList [cdkDropListData]="completedTasks" (cdkDropListDropped)="drop($event)">
           <mat-list>
-            <mat-list-item *ngFor="let task of tasks.filter(task => task.completed)" cdkDrag>
+            <mat-list-item *ngFor="let task of completedTasks" cdkDrag>
               <div class="task-item completed">
                 <div>
                   <div class="task-title">{{ task.title }}</div>

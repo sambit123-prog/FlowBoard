@@ -27,10 +27,10 @@
   <mat-card class="events-card">
     <mat-card-title>Upcoming events</mat-card-title>
     <mat-card-content>
-      <mat-list>
-        <mat-list-item *ngFor="let event of events">
+      <mat-list *ngIf="events.length > 0; else emptyEvents">
+        <mat-list-item *ngFor="let event of events" class="event-list-item">
           <div class="event-item">
-            <div>
+            <div class="event-info">
               <div class="event-title">{{ event.title }}</div>
               <div class="event-meta">{{ event.date }}</div>
               <div class="event-notes" *ngIf="event.notes">{{ event.notes }}</div>
@@ -39,6 +39,11 @@
           </div>
         </mat-list-item>
       </mat-list>
+      <ng-template #emptyEvents>
+        <div class="empty-events">
+          No saved events yet. Add one and reload to verify browser JSON persistence.
+        </div>
+      </ng-template>
     </mat-card-content>
   </mat-card>
 </section>

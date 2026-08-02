@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
+import { PersistenceService } from '../services/persistence.service';
 
 interface TaskItem {
   id: number;
@@ -29,18 +30,26 @@ export class TaskBoard implements OnInit {
   newTitle = '';
   newNotes = '';
 
-  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {}
+  get pendingTasks(): TaskItem[] {
+    return this.tasks.filter(task => !task.completed);
+  }
+
+  get completedTasks(): TaskItem[] {
+    return this.tasks.filter(task => task.completed);
+  }
+
+  constructor(private persistence: PersistenceService, private dialog: MatDialog, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadTasks();
   }
 
   loadTasks(): void {
-    this.tasks = JSON.parse(localStorage.getItem('flow-board-tasks') ?? '[]');
+    this.tasks = this.persistence.loadTasks();
   }
 
   saveTasks(): void {
-    localStorage.setItem('flow-board-tasks', JSON.stringify(this.tasks));
+    this.persistence.saveTasks(this.tasks);
   }
 
   addTask(): void {
@@ -58,7 +67,10 @@ export class TaskBoard implements OnInit {
     this.newTitle = '';
     this.newNotes = '';
     this.saveTasks();
-    this.snackBar.open('Task added.', 'Close', { duration: 1800 });
+    this.snackBar.open('✔ Task added', 'Close', {
+      duration: 1800,
+      panelClass: ['success-snackbar'],
+    });
   }
 
   toggleComplete(task: TaskItem): void {
@@ -69,7 +81,10 @@ export class TaskBoard implements OnInit {
   removeTask(task: TaskItem): void {
     this.tasks = this.tasks.filter(item => item.id !== task.id);
     this.saveTasks();
-    this.snackBar.open('Task removed.', 'Close', { duration: 1800 });
+    this.snackBar.open('✔ Task removed', 'Close', {
+      duration: 1800,
+      panelClass: ['success-snackbar'],
+    });
   }
 
   drop(event: CdkDragDrop<TaskItem[]>): void {

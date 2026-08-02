@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
+import { PersistenceService } from '../services/persistence.service';
 
 Chart.register(...registerables);
 
@@ -19,10 +20,12 @@ export class Analytics implements OnInit, AfterViewInit {
   totalTasks = 0;
   kpis: Array<{ label: string; value: string; hint: string }> = [];
 
+  constructor(private persistence: PersistenceService) {}
+
   ngOnInit(): void {
-    const tasks = JSON.parse(localStorage.getItem('flow-board-tasks') ?? '[]');
+    const tasks = this.persistence.loadTasks();
     this.totalTasks = tasks.length;
-    this.completed = tasks.filter((task: { completed: boolean }) => task.completed).length;
+    this.completed = tasks.filter(task => task.completed).length;
     this.pending = this.totalTasks - this.completed;
     this.kpis = [
       { label: 'Completed tasks', value: `${this.completed}`, hint: 'Finished work items' },

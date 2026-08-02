@@ -9,10 +9,35 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 16px;
 }
 
-.toolbar-spacer {
-  flex: 1;
+.toolbar-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toolbar-brand small {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.75rem;
+}
+
+.toolbar-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .active-link {
@@ -23,6 +48,13 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 24px;
+}
+
+@media (max-width: 900px) {
+  .app-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 @media (max-width: 700px) {
