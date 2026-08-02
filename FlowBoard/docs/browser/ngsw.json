@@ -1,7 +1,7 @@
 {
   "configVersion": 1,
-  "timestamp": 1785676062875,
-  "index": "/flowboard/index.html",
+  "timestamp": 1785676774047,
+  "index": "/FlowBoard/index.html",
   "assetGroups": [
     {
       "name": "app",
@@ -11,10 +11,10 @@
         "ignoreVary": true
       },
       "urls": [
-        "/flowboard/favicon.ico",
-        "/flowboard/index.html",
-        "/flowboard/main-H7RIKI4J.js",
-        "/flowboard/styles-2EDWS5C5.css"
+        "/FlowBoard/favicon.ico",
+        "/FlowBoard/index.html",
+        "/FlowBoard/main-H7RIKI4J.js",
+        "/FlowBoard/styles-2EDWS5C5.css"
       ],
       "patterns": []
     },
@@ -45,10 +45,10 @@
     }
   ],
   "hashTable": {
-    "/flowboard/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
-    "/flowboard/index.html": "33fe6ce8e22e1e5448c61831cbd5d918386819da",
-    "/flowboard/main-H7RIKI4J.js": "db15fc5ebd4bf163ce315d75a19b0b6cffc745f8",
-    "/flowboard/styles-2EDWS5C5.css": "2be28f9289f9e4868afc51b39f6026c231a69bd8"
+    "/FlowBoard/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "/FlowBoard/index.html": "e94d1e30da952fa5728bd5b0cab9258833412437",
+    "/FlowBoard/main-H7RIKI4J.js": "db15fc5ebd4bf163ce315d75a19b0b6cffc745f8",
+    "/FlowBoard/styles-2EDWS5C5.css": "2be28f9289f9e4868afc51b39f6026c231a69bd8"
   },
   "navigationUrls": [
     {
